@@ -10,6 +10,7 @@ import {
   types,
 } from "../../constants/const";
 import CheckboxesTags from "./Checkbox";
+import RichText from "./RichText";
 
 const allBoxes = [
   {
@@ -79,7 +80,10 @@ const add_questions = () => {
         <CheckboxesTags options={level} lebel="level" />
       </Grid> */}
       </Grid>
+      <h3>Question</h3>
       <Divider />
+
+      <RichText />
     </>
   );
 };
