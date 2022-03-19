@@ -2,7 +2,6 @@ import AddIcon from "@mui/icons-material/Add";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import DynamicFormIcon from "@mui/icons-material/DynamicForm";
-import WrapTextIcon from "@mui/icons-material/WrapText";
 export const drawerOptions = [
   {
     lebel: "Add field",
@@ -22,7 +21,7 @@ export const drawerOptions = [
   },
   {
     lebel: "Add new question type",
-    icon: WrapTextIcon,
+    icon: DynamicFormIcon,
   },
 ];
 

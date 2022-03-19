@@ -6,6 +6,9 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./styles.css";
 import DOMPurify from "dompurify";
 import { Divider } from "@mui/material";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../lib/firebase";
+
 const RichText = () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -28,20 +31,26 @@ const RichText = () => {
   //function to save image in firebase storage
   function uploadImageCallBack(file: any) {
     return new Promise((resolve, reject) => {
-      // const xhr = new XMLHttpRequest();
-      // xhr.open("POST", "https://api.imgur.com/3/image");
-      // xhr.setRequestHeader("Authorization", "Client-ID 15c0ae589769379");
-      // const data = new FormData();
-      // data.append("image", file);
-      // xhr.send(data);
-      // xhr.addEventListener("load", () => {
-      //   const response = JSON.parse(xhr.responseText);
-      //   resolve(response);
-      // });
-      // xhr.addEventListener("error", () => {
-      //   const error = JSON.parse(xhr.responseText);
-      //   reject(error);
-      // });
+      if (!file) return;
+      const storageRef = ref(storage, `images/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot: any) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error: any) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url: any) => {
+            console.log(url);
+            resolve({ data: { link: url } });
+          });
+        }
+      );
     });
   }
   return (
